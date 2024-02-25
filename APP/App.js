@@ -37,7 +37,7 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="PublicMain">
+      <Stack.Navigator initialRouteName="Home">
 
         {/* home page */}
         <Stack.Screen name="Home" component={HomePage}/>
