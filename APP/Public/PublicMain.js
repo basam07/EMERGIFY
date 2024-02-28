@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 // import {Animated} from 'react-native-reanimated';
 // import { View } from '@motify/components';
-import {MotiView} from 'moti';
+import {MotiView, ScrollView} from 'moti';
 import {Easing} from 'react-native-reanimated';
 
 import {
@@ -20,6 +20,7 @@ const PMain = () => {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <View>
         <Image source={require('../../images/logo.jpg')} style={styles.image} />
       </View>
@@ -48,13 +49,21 @@ const PMain = () => {
         </View>
       </TouchableOpacity>
       <View>
-        <Text>more details</Text>
+        <Text style = {styles.note}>
+          Note: {'\n'}
+          Your safety is our priority, tap to notify. {'\n'}
+          The app automatically shares your location with emergency. {'\n'}
+          Quick access to emergency departments during critical situations." {'\n'}
+
+          </Text>
       </View>
+      </ScrollView>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     height: '100%',
@@ -64,7 +73,6 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 100,
     backgroundColor: '#d20000',
-    
     justifyContent: 'center',
     alignItems: 'center',
 
@@ -85,6 +93,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
+  },
+  note: {
+    marginTop: 30,
+    marginLeft: 10,
+    flex: 1,
   },
 });
 
