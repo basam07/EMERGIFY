@@ -53,8 +53,7 @@ const PMain = () => {
           Note: {'\n'}
           Your safety is our priority, tap to notify. {'\n'}
           The app automatically shares your location with emergency. {'\n'}
-          Quick access to emergency departments during critical situations." {'\n'}
-
+          Quick access to emergency departments during critical situations."
           </Text>
       </View>
       </ScrollView>
@@ -86,6 +85,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 270,
     marginTop: -30,
+    alignSelf: 'center',
   },
   btnText: {
     alignSelf: 'center',
@@ -95,9 +95,15 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   note: {
-    marginTop: 30,
-    marginLeft: 10,
+    color: 'black',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    marginTop: "20%",
+    margin: 10,
     flex: 1,
+
   },
 });
 

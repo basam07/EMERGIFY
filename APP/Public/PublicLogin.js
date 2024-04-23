@@ -53,37 +53,31 @@ const PublicLoginForm = ({navigation}) => {
   const submitOtp = async () => {
     setOTPError('');
     try {
-      // const confirmData = {confirm: async otp => {}};
       const response = await confirmData.confirm(OTP);
-      // Check if the phone number exists in Firebase Authentication
+  
+      // Check if the phone number exists in Firestore and if CNIC is not empty
       const phoneNumberExists = await checkPhoneNumberExists(PNo);
-      if (phoneNumberExists) {
-        // console.log('Phone number exists in Firestore');
-        navigation.navigate('PublicMain');
-        alert('You are login successfully');
-        // Navigate to the next screen or perform further actions
+      const cnicExists = await checkCnicExists(PNo);
+  
+      if (phoneNumberExists && cnicExists) {
+        // Both phone number and CNIC exist, navigate to Medical Wallet page
+        navigation.navigate('Medical Details');
+        alert('You are logged in successfully');
       } else {
-        // Display error message or take appropriate action
-        // console.log('Phone number does not exist in Firestore');
-
+        // Either phone number or CNIC is missing, navigate to PublicSignUp
         let userId = auth().currentUser.uid;
         let phoneNo = auth().currentUser.phoneNumber;
-        await saveUserInDB(userId, phoneNo).then(function (result) {
-          // alert(
-          //   'Data Saved in DB with ID ' + userId + 'Phone Number' + phoneNo,
-          // );
-          navigation.navigate('PublicSignUp');
-        });
+  
+        // Save user in Firestore
+        await saveUserInDB(userId, phoneNo);
+  
+        navigation.navigate('PublicSignUp');
       }
     } catch (error) {
-      // console.error('Error submitting OTP:', error);
-      // Handle OTP submission error
       if (!OTP) {
         setOTPError('Please enter your OTP');
-      }
-      if (OTP == false) {
+      } else {
         setOTPError('Incorrect OTP');
-        return;
       }
     }
   };
@@ -123,6 +117,26 @@ const PublicLoginForm = ({navigation}) => {
       }
     } catch (error) {
       // console.error('Error checking user and CNIC:', error);
+      return false;
+    }
+  };
+
+  // Function to check if CNIC exists in Firestore
+  const checkCnicExists = async phoneNumber => {
+    try {
+      const userRef = firestore().collection('publicUsers');
+      const result = await userRef
+        .where('phoneNumber', '==', phoneNumber)
+        .get();
+
+      if (result.empty) {
+        return false; // User does not exist
+      }
+
+      const userData = result.docs[0].data();
+      return !!userData.cnic; // Return true if CNIC exists and is not empty
+    } catch (error) {
+      console.error('Error checking CNIC:', error);
       return false;
     }
   };

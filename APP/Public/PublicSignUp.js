@@ -19,6 +19,7 @@ const PublicSignupForm = ({navigation}) => {
   const [lastName, setLastName] = useState('');
   const [cnic, setCNIC] = useState('');
   const [dateofbirth, setDateofBirth] = useState('Date of Birth');
+  const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -29,6 +30,7 @@ const PublicSignupForm = ({navigation}) => {
   const [lastNameError, setLastNameError] = useState('');
   const [cnicError, setCNICError] = useState('');
   const [dateofbirthError, setDateofBirthError] = useState('');
+  const [addressError, setAddressError] = useState('');
   const [genderError, setGenderError] = useState('');
 
   //database
@@ -39,6 +41,7 @@ const PublicSignupForm = ({navigation}) => {
     setLastNameError('');
     setCNICError('');
     setDateofBirthError('');
+    setAddressError('');
     setGenderError('');
 
     if (!firstName) {
@@ -57,6 +60,10 @@ const PublicSignupForm = ({navigation}) => {
       setDateofBirthError('Please enter your Date of Birth');
       return;
     }
+    if (!address) {
+      setCNICError('Please enter latest address');
+      return;
+    }
     if (!gender) {
       setGenderError('Please select your Gender');
       return;
@@ -64,13 +71,11 @@ const PublicSignupForm = ({navigation}) => {
 
     // update data in firebase
     await updateUserData(userId).then(function () {
-      // alert(
-      //   'Data Saved in DB with ID ' + userId + 'Phone Number' + phoneNo,
-      // );
-      navigation.navigate('PublicMain');
+      navigation.navigate('Medical Details');
     });
   };
 
+  //udate data in firebase
   // const handleCreate = async () => {
   //   console.log('check user' , updateUserData());
   // };
@@ -78,13 +83,14 @@ const PublicSignupForm = ({navigation}) => {
   const userId = auth().currentUser.uid;
   const updateUserData = async () => {
     try {
-      console.log('109 user id', userId);
+      console.log('user id', userId);
       const updateRef = firestore().collection('publicUsers').doc(userId);
       await updateRef.update({
         firstName: firstName,
         lastName: lastName,
         cnic: cnic,
         dateOfBirth: dateofbirth,
+        address: address,
         gender: gender,
       });
       console.log('data updated');
@@ -180,6 +186,14 @@ const PublicSignupForm = ({navigation}) => {
           {dateofbirthError ? (
             <Text style={styles.errorText}>{dateofbirthError}</Text>
           ) : null}
+
+          <TextInput
+            style={styles.input}
+            placeholder="Address"
+            value={address}
+            onChangeText={text => setAddress(text)}
+          />
+          {addressError ? <Text style={styles.errorText}>{addressError}</Text> : null}
 
           <Picker
             selectedValue={gender}

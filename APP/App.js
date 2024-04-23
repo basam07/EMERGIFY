@@ -15,6 +15,7 @@ import HomePage from './Home';
 //public pages
 import PublicLoginForm from './Public/PublicLogin';
 import PublicSignupForm from './Public/PublicSignUp';
+import MadicalWallet from './Public/MadicalWallet';
 import PMain from './Public/PublicMain';
 // police pages
 import PoliceBeltCheck from './Police/PoliceBelt';
@@ -37,8 +38,8 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRouteName="Home"> */}
-      <Stack.Navigator initialRouteName="PublicMain">
+      <Stack.Navigator initialRouteName="Home">
+      {/* <Stack.Navigator initialRouteName="Medical Details"> */}
 
         {/* home page */}
         <Stack.Screen name="Home" component={HomePage}/>
@@ -46,6 +47,7 @@ const App = () => {
         {/* public pages */}
         <Stack.Screen name="PublicLogin" component={PublicLoginForm}/>
         <Stack.Screen name="PublicSignUp" component={PublicSignupForm} />
+        <Stack.Screen name="Medical Details" component={MadicalWallet} />
         <Stack.Screen name="PublicMain" component={PMain} />
 
         {/* police pages */}
