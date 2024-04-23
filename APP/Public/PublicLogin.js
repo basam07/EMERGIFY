@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 
 const PublicLoginForm = ({navigation}) => {
+  //State variables for form inputs and errors
   const [phoneNo, setPhone] = useState('');
   const [OTP, setOTP] = useState('');
   const [phoneError, setPhoneError] = useState('');
@@ -49,7 +50,7 @@ const PublicLoginForm = ({navigation}) => {
     }
   };
 
-  //function for move next Main page // check otp is valed or not valid
+  //function for move next Main page // check otp is valid or not valid
   const submitOtp = async () => {
     setOTPError('');
     try {
