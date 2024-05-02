@@ -63,7 +63,7 @@ const AmbulanceSignupForm = ({navigation}) => {
       // alert(
       //   'Data Saved in DB with ID ' + userId + 'Phone Number' + phoneNo,
       // );
-      navigation.navigate('Public');
+      navigation.navigate('Ambulance');
     });
   };
 

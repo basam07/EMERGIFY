@@ -115,8 +115,8 @@ const MadicalWallet = ({navigation}) => {
         </View>
 
         <View style={styles.box}>
-          <Text style={styles.title}>Madical Wallet</Text>
-          <Text style={styles.text}>Enter your Madical Details</Text>
+          <Text style={styles.title}>Medical Wallet</Text>
+          <Text style={styles.text}>Enter your Medical Details</Text>
 
           <TextInput
             style={styles.input}

@@ -59,7 +59,7 @@ const PoliceLoginForm = ({navigation}) => {
       if (phoneNumberExists) {
         // Navigate to the next screen or perform further actions
         console.log('Phone number exists in Firebase Authentication');
-        navigation.navigate('PoliceSignUp');
+        navigation.navigate('Police');
         alert('You are login successfully');
       } else {
         // Display error message or take appropriate action

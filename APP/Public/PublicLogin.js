@@ -59,12 +59,19 @@ const PublicLoginForm = ({navigation}) => {
       // Check if the phone number exists in Firestore and if CNIC is not empty
       const phoneNumberExists = await checkPhoneNumberExists(PNo);
       const cnicExists = await checkCnicExists(PNo);
+      const bloodGroupExists = await checkBloodGroupExists(PNo);
   
-      if (phoneNumberExists && cnicExists) {
+      if (phoneNumberExists && cnicExists && bloodGroupExists) {
+        // Both phone number and CNIC exist, navigate to Medical Wallet page
+        navigation.navigate('PublicMain');
+        alert('You are logged in successfully');
+      } 
+      else if (phoneNumberExists && cnicExists) {
         // Both phone number and CNIC exist, navigate to Medical Wallet page
         navigation.navigate('Medical Details');
         alert('You are logged in successfully');
-      } else {
+      } 
+      else {
         // Either phone number or CNIC is missing, navigate to PublicSignUp
         let userId = auth().currentUser.uid;
         let phoneNo = auth().currentUser.phoneNumber;
@@ -135,9 +142,28 @@ const PublicLoginForm = ({navigation}) => {
       }
 
       const userData = result.docs[0].data();
+      console.log(userData.cnic);
       return !!userData.cnic; // Return true if CNIC exists and is not empty
     } catch (error) {
       console.error('Error checking CNIC:', error);
+      return false;
+    }
+  };
+  const checkBloodGroupExists = async phoneNumber => {
+    try {
+      const userRef = firestore().collection('publicUsers');
+      const result = await userRef
+        .where('phoneNumber', '==', phoneNumber)
+        .get();
+
+      if (result.empty) {
+        return false; // User does not exist
+      }
+
+      const userData = result.docs[0].data();
+      return !!userData.bloodGroup; // Return true if CNIC exists and is not empty
+    } catch (error) {
+      console.error('Error checking Blood Group:', error);
       return false;
     }
   };

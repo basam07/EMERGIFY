@@ -1,21 +1,47 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-// import {Animated} from 'react-native-reanimated';
-// import { View } from '@motify/components';
 import {MotiView, ScrollView} from 'moti';
 import {Easing} from 'react-native-reanimated';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableOpacity, 
   View,
 } from 'react-native';
 
-const PMain = () => {
-  const handleClick = () => {
-    console.log('SOS Clicked!');
+const PMain = ({navigation}) => {
+  const handleFetchAndSaveData = async () => {
+    try {
+      const currentUser = auth().currentUser;
+      if (!currentUser) {
+        console.log('No user is currently logged in');
+        return;
+      } 
+
+      // Fetch data from policeUsers collection for the current user
+      const userId = currentUser.uid;
+      // console.log('@@@ user id', userId);
+      const userDoc = await firestore().collection('publicUsers').doc(userId).get();
+      const userData = userDoc.data();
+
+      if (!userData) {
+        console.log('User data not found in Public Users collection');
+        return;
+      }
+
+      // Save fetched data to the requests collection
+      await firestore().collection('policerequests').doc(userId).set(userData);
+      await firestore().collection('firerequests').doc(userId).set(userData);
+      await firestore().collection('ambulancerequests').doc(userId).set(userData);
+      navigation.navigate('camera');
+      console.log('Data fetched and saved successfully:', userData);
+    } catch (error) {
+      console.error('Error fetching and saving data:', error);
+    }
   };
 
   return (
@@ -25,7 +51,7 @@ const PMain = () => {
         <Image source={require('../../images/logo.jpg')} style={styles.image} />
       </View>
 
-      <TouchableOpacity style={styles.center} onPress={handleClick}>
+      <TouchableOpacity style={styles.center} onPress={handleFetchAndSaveData}>
         <View style={styles.dot}>
           {[...Array(3).keys()].map(index => {
             return (
